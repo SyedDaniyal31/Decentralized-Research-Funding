@@ -1,5 +1,3 @@
-# Decentralized-Research-Funding
-DRF is a blockchain-based fundraising platform designed to revolutionize scientific research funding. It connects investors, researchers, and advisors through a transparent, secure, and decentralized ecosystem powered by Ethereum smart contracts.
 # 🧪 DRF – Decentralized Research Funding Platform
 
 **DRF (Decentralized Research Funding)** is a blockchain-based platform that connects **investors, researchers, advisors, and admins** to fund and manage research projects in **Human, Animal, and Agricultural disease research**.
