@@ -1,0 +1,21 @@
+{
+  "name": "drf-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/frontend",
+    "packages/backend",
+    "packages/contracts"
+  ],
+  "scripts": {
+  "dev:frontend": "yarn workspace drf-frontend dev",
+  "dev:backend": "yarn workspace drf-backend dev",
+  "dev:contracts": "yarn workspace drf-contracts hardhat node",
+  "dev": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\" \"yarn dev:contracts\"",
+    "lint": "yarn workspaces run lint",
+    "test": "yarn workspaces run test",
+    "build": "yarn workspaces run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

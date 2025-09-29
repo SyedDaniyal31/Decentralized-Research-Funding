@@ -1,0 +1,83 @@
+// Prisma schema for DRF backend
+// Models: User, Proposal, Milestone, KYC
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  RESEARCHER
+  INVESTOR
+  ADMIN
+}
+
+enum KYCStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ProposalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FUNDED
+  COMPLETED
+}
+
+model User {
+  id           String    @id @default(uuid())
+  wallet       String    @unique
+  email        String?   @unique
+  name         String?
+  role         Role      @default(RESEARCHER)
+  kycStatus    KYCStatus @default(PENDING)
+  proposals    Proposal[]
+  milestones   Milestone[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Proposal {
+  id           String      @id @default(uuid())
+  title        String
+  abstract     String
+  ipfsHash     String
+  fundingAmount Float
+  status       ProposalStatus @default(PENDING)
+  researcher   User      @relation(fields: [researcherId], references: [id])
+  researcherId String
+  milestones   Milestone[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Milestone {
+  id           String    @id @default(uuid())
+  proposal     Proposal @relation(fields: [proposalId], references: [id])
+  proposalId   String
+  researcher   User     @relation(fields: [researcherId], references: [id])
+  researcherId String
+  index        Int
+  ipfsProof    String?
+  approved     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@unique([proposalId, index], name: "proposalId_index")
+}
+
+model KYC {
+  id           String    @id @default(uuid())
+  user         User      @relation(fields: [userId], references: [id])
+  userId       String    @unique
+  provider     String
+  status       KYCStatus @default(PENDING)
+  referenceId  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
